@@ -5,6 +5,7 @@ plugins {
     id("com.google.dagger.hilt.android")
 }
 
+
 android {
     namespace = "com.example.autumnhackathon"
     compileSdk = 34
@@ -36,7 +37,12 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        jvmTarget = "18"
+        jvmTarget = "1.8"
+    }
+    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KaptGenerateStubs> {
+        kotlinOptions {
+            jvmTarget="1.8"
+        }
     }
     buildFeatures {
         compose = true
