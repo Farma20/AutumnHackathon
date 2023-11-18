@@ -15,12 +15,14 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.autumnhackathon.R
 import com.example.autumnhackathon.ui.task.elements.ProfileCardShort
 import com.example.autumnhackathon.ui.task.elements.TaskMainCard
@@ -29,6 +31,11 @@ import com.example.autumnhackathon.ui.theme.backgroundColor
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TaskScreen(){
+
+    val viewModel = hiltViewModel<TaskScreenViewModel>()
+
+    val expeditionData = viewModel.expeditions.collectAsState()
+
     Scaffold(
         topBar = { TopBar() },
         containerColor = backgroundColor
@@ -40,8 +47,11 @@ fun TaskScreen(){
                 .verticalScroll(rememberScrollState())
         ) {
             ProfileCardShort()
-            Spacer(modifier = Modifier.height(16.dp))
-            TaskMainCard(1)
+            expeditionData.value.forEach{expeditions ->
+                Spacer(modifier = Modifier.height(16.dp))
+                TaskMainCard(expeditions)
+            }
+            Spacer(modifier = Modifier.height(80.dp))
         }
     }
 }

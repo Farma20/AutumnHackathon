@@ -29,7 +29,7 @@ fun AppNavGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Navigation.TasksScreen.route,
+        startDestination = Navigation.ProfileScreen.route,
         modifier = Modifier.background(backgroundColor)
     ){
         composable(route = Navigation.InitializationScreen.route) {

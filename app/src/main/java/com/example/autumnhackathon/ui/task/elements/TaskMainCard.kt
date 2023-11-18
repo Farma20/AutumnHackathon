@@ -2,8 +2,8 @@ package com.example.autumnhackathon.ui.task.elements
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -26,47 +26,55 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.autumnhackathon.R
+import com.example.autumnhackathon.ui.task.Expeditions
+import com.example.autumnhackathon.ui.task.ProductItemDataClass
 import com.example.autumnhackathon.ui.theme.FontOpenSansRegular
 import com.example.autumnhackathon.ui.theme.backgroundColor
 import com.example.autumnhackathon.ui.theme.buttonColor
+import com.example.autumnhackathon.ui.theme.greyApplicationColor
 import com.example.autumnhackathon.ui.theme.primaryTextColor
 import com.example.autumnhackathon.ui.theme.redApplicationColor
 
 
-
 @Composable
 fun TaskMainCard(
-    taskNumber: Int
+    expedition: Expeditions
 ){
     Column {
-        TaskNumber(taskNumber = taskNumber)
+        TaskNumber(taskNumber = expedition.number)
         Spacer(modifier = Modifier.height(8.dp))
-        TaskCard()
+        TaskCard(
+            expedition
+        )
     }
 }
 
 @Composable
-private fun TaskCard() {
+private fun TaskCard(
+    expedition: Expeditions
+) {
     var isClicked by remember { mutableStateOf(false) }
     var cardHeight by remember { mutableStateOf(0) }
     val interactionSource = remember { MutableInteractionSource() }
+
+    val expeditionIsReady = expedition.status > 2
 
     Card(
         modifier = Modifier
@@ -92,9 +100,9 @@ private fun TaskCard() {
             modifier = Modifier.padding(10.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            TaskHeader(isClicked)
+            TaskHeader(isClicked, expedition.status, expedition.time)
             Spacer(modifier = Modifier.height(16.dp))
-            TaskStatus()
+            TaskStatus(expedition.status, expedition.gateNumber)
             Spacer(modifier = Modifier.height(10.dp))
             AnimatedVisibility(visible = isClicked) {
                 Column(
@@ -107,7 +115,7 @@ private fun TaskCard() {
                         fontWeight = FontWeight(600),
                         color = primaryTextColor
                     )
-                    PRODUCT_LIST.forEach{product->
+                    expedition.productList.forEach{product->
                         Spacer(modifier = Modifier.height(10.dp))
                         ProductItem(
                             productName = product.productName,
@@ -115,7 +123,7 @@ private fun TaskCard() {
                         )
                     }
                     Spacer(modifier = Modifier.height(16.dp))
-                    SuccessButton()
+                    SuccessButton(expeditionIsReady)
                     Spacer(modifier = Modifier.height(10.dp))
                 }
             }
@@ -124,14 +132,18 @@ private fun TaskCard() {
 }
 
 @Composable
-private fun SuccessButton() {
+private fun SuccessButton(
+    expeditionIsReady: Boolean
+) {
     Button(
         modifier = Modifier
             .fillMaxWidth()
             .height(36.dp),
+        enabled = expeditionIsReady,
         shape = RoundedCornerShape(10.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = Color(0xFFA1A1A1)
+            containerColor = buttonColor,
+            disabledContainerColor = Color(0xFFA1A1A1)
         ),
         onClick = {
 
@@ -181,67 +193,142 @@ private fun ProductItem(
 }
 
 @Composable
-private fun TaskStatus() {
+private fun TaskStatus(taskStatus:Int, gateNumber: Int) {
     val statusIcons = listOf(
             painterResource(id = R.drawable.task_status_clock),
             painterResource(id = R.drawable.task_status_box),
             painterResource(id = R.drawable.task_status_finish)
         )
     
-    Row (
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
-    ){
-        statusIcons.forEachIndexed{id, icon->
-            TaskStatusElement(icon)
-            if (id != 2){
-                Box(modifier = Modifier
-                    .weight(1f)
-                    .height(3.dp)
-                    .background(redApplicationColor))
+    if (taskStatus < 3){
+        Row (
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ){
+            statusIcons.forEachIndexed{id, icon->
+                val enabled = id+1 <= taskStatus
+
+                TaskStatusElement(
+                    icon,
+                    enabled
+                )
+                if (id != 2){
+                    Box(modifier = Modifier
+                        .weight(1f)
+                        .height(3.dp)
+                        .background(if (enabled) redApplicationColor else greyApplicationColor))
+                }
             }
         }
+    }else{
+        FinishedTaskStatus(gateNumber = gateNumber)
     }
 }
 
 @Composable
-private fun TaskStatusElement(icon: Painter){
+private fun TaskStatusElement(
+    icon: Painter,
+    enabled:Boolean
+){
     Box(
         modifier = Modifier
             .size(54.dp)
             .clip(CircleShape)
-            .background(redApplicationColor),
+            .border(3.dp, if (enabled) redApplicationColor else greyApplicationColor, CircleShape)
+            .background(if (enabled) redApplicationColor else backgroundColor),
         contentAlignment = Alignment.Center
     ){
         Icon(
             painter = icon,
             contentDescription = "testStatus",
-            tint = backgroundColor
+            tint = if (enabled) backgroundColor else greyApplicationColor
         )
     }
 }
 
 @Composable
-private fun TaskHeader(isClicked: Boolean) {
+private fun FinishedTaskStatus(
+    gateNumber: Int
+){
+    Row (
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ){
+        Box(
+            modifier = Modifier
+                .size(54.dp)
+                .clip(CircleShape)
+                .background(redApplicationColor),
+            contentAlignment = Alignment.Center
+        ){
+            Icon(
+                painter = painterResource(id = R.drawable.task_status_finish),
+                contentDescription = "testStatus",
+                tint = backgroundColor
+            )
+        }
+        Box(modifier = Modifier
+            .weight(1f)
+            .height(3.dp)
+            .background(redApplicationColor))
+        Row(
+            modifier = Modifier.padding(bottom = 10.dp),
+            verticalAlignment = Alignment.Bottom
+        ) {
+            Text(
+                modifier = Modifier.padding(horizontal = 8.dp),
+                text = "гейт",
+                fontSize = 23.sp,
+                fontFamily = FontOpenSansRegular,
+                fontWeight = FontWeight(400),
+                color = primaryTextColor
+            )
+            Text(
+                modifier = Modifier.padding(end = 28.dp),
+                text = "№$gateNumber",
+                fontSize = 26.sp,
+                fontFamily = FontOpenSansRegular,
+                fontWeight = FontWeight(400),
+                color = redApplicationColor
+            )
+        }
+    }
+}
+
+@Composable
+private fun TaskHeader(
+    isClicked: Boolean,
+    status: Int,
+    time: Int
+) {
+    val taskStatus = when(status){
+        1 -> "Заказ принят"
+        2 -> "Заказ в работе"
+        3 -> "Заказ готов"
+        else -> "Неизвестный статус"
+    }
+
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
-            text = "Заказ принят",
+            text = taskStatus,
             fontSize = 16.sp,
             fontFamily = FontOpenSansRegular,
             fontWeight = FontWeight(400),
             color = primaryTextColor
         )
         Spacer(modifier = Modifier.weight(1f))
-        Text(
-            text = "30 минут",
-            fontSize = 16.sp,
-            fontFamily = FontOpenSansRegular,
-            fontWeight = FontWeight(600),
-            color = redApplicationColor
-        )
+        if (status < 3){
+            Text(
+                text = "$time мин.",
+                fontSize = 16.sp,
+                fontFamily = FontOpenSansRegular,
+                fontWeight = FontWeight(600),
+                color = redApplicationColor
+            )
+        }
         Spacer(modifier = Modifier.width(6.dp))
         Box(
             modifier = Modifier
@@ -274,18 +361,3 @@ private fun TaskNumber(
     )
 }
 
-data class ProductItemDataClass(
-    val productName:String,
-    val productSize:String,
-)
-
-val PRODUCT_LIST = listOf<ProductItemDataClass>(
-    ProductItemDataClass("Сушки «Кроха»", "10 Х 18 шт."),
-    ProductItemDataClass("Сушки «Малютка»»", "10 Х 18 шт."),
-    ProductItemDataClass("Пряники «Шоколадные» крупные", "15 Х 12 шт."),
-    ProductItemDataClass("Пряники Заварные «абрикос»", "15 Х 12 шт."),
-    ProductItemDataClass("Вафли со вкусом «Лимона»", "10 Х 36 шт."),
-    ProductItemDataClass("Сухари «Московские»", "17 Х 18 шт."),
-    ProductItemDataClass("Сухари «Сливочные»", "17 Х 18 шт."),
-    ProductItemDataClass("Сухари «С маком»", "17 Х 18 шт."),
-)
