@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.autumnhackathon.ui.points.PointsScreen
 import com.example.autumnhackathon.ui.profile.ProfileScreen
 import com.example.autumnhackathon.ui.task.TaskScreen
 import com.example.autumnhackathon.ui.theme.FontOpenSansRegular
@@ -29,7 +30,7 @@ fun AppNavGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Navigation.ProfileScreen.route,
+        startDestination = Navigation.PointsScreen.route,
         modifier = Modifier.background(backgroundColor)
     ){
         composable(route = Navigation.InitializationScreen.route) {
@@ -41,17 +42,7 @@ fun AppNavGraph(
         }
 
         composable(route = Navigation.PointsScreen.route){
-            Column(
-                Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = Navigation.PointsScreen.route,
-                    fontSize = 22.sp,
-                    fontFamily = FontOpenSansRegular
-                )
-            }
+            PointsScreen()
         }
 
         composable(route = Navigation.ProfileScreen.route){
