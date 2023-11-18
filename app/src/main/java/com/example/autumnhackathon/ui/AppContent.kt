@@ -3,13 +3,11 @@ package com.example.autumnhackathon.ui
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -44,7 +42,7 @@ fun AppContent() {
     val tabs = remember { BottomTabs.values() }
 
     Scaffold(
-        modifier = androidx.compose.ui.Modifier
+        modifier = Modifier
             .background(backgroundColor),
     ) {
         Box(
@@ -61,7 +59,6 @@ fun AppContent() {
 
 @Composable
 fun BottomNavBar(navController: NavController, tabItems: Array<BottomTabs>) {
-
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination

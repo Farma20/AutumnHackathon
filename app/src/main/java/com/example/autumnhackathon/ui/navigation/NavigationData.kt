@@ -17,7 +17,7 @@ enum class BottomTabs(
     val route: String,
     @DrawableRes val iconRes: Int
 ) {
-    Tasks(Navigation.InitializationScreen.route, R.drawable.tasks_tab),
+    Tasks(Navigation.TasksScreen.route, R.drawable.tasks_tab),
     Points(Navigation.PointsScreen.route, R.drawable.points_tab),
     Profile(Navigation.ProfileScreen.route, R.drawable.profile_tab),
 }
