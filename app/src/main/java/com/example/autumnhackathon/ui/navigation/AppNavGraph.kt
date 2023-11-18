@@ -15,6 +15,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.autumnhackathon.ui.profile.ProfileScreen
+import com.example.autumnhackathon.ui.task.TaskScreen
 import com.example.autumnhackathon.ui.theme.FontOpenSansRegular
 import com.example.autumnhackathon.ui.theme.backgroundColor
 import com.example.msmgrouptest.ui.sing_in.SingInScreen
@@ -28,7 +29,7 @@ fun AppNavGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Navigation.ProfileScreen.route,
+        startDestination = Navigation.TasksScreen.route,
         modifier = Modifier.background(backgroundColor)
     ){
         composable(route = Navigation.InitializationScreen.route) {
@@ -36,17 +37,7 @@ fun AppNavGraph(
         }
 
         composable(route = Navigation.TasksScreen.route){
-            Column(
-                Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = Navigation.TasksScreen.route,
-                    fontSize = 22.sp,
-                    fontFamily = FontOpenSansRegular
-                )
-            }
+            TaskScreen()
         }
 
         composable(route = Navigation.PointsScreen.route){

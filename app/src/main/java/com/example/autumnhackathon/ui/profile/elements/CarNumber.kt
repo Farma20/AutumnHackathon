@@ -25,6 +25,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -33,23 +34,32 @@ import com.example.autumnhackathon.ui.theme.FontOpenSansRegular
 import com.example.autumnhackathon.ui.theme.primaryTextColor
 
 @Composable
-fun CarNumber(){
+fun CarNumber(
+    height: Dp = 70.dp,
+    border:Dp = 2.dp,
+    borderSize:Dp = 10.dp,
+    horizontalPaddings: Dp = 6.dp,
+    numberSize: TextUnit = 54.sp,
+    letterSize:TextUnit = 38.sp,
+    codeWith: Dp = 75.dp,
+    codeHeight: Dp = 50.dp
+){
     Row(
         modifier = Modifier
-            .height(70.dp)
-            .border(2.dp, color = Color(0xFFA1A1A1), RoundedCornerShape(10.dp)),
+            .height(height)
+            .border(border, color = Color(0xFFA1A1A1), RoundedCornerShape(borderSize)),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            modifier = Modifier.padding(horizontal = 6.dp),
+            modifier = Modifier.padding(horizontal = horizontalPaddings),
             text = buildAnnotatedString {
                 append("п")
-                withStyle(SpanStyle(fontSize = 54.sp)){
+                withStyle(SpanStyle(fontSize = numberSize)){
                     append("125")
                 }
                 append("ми")
             },
-            fontSize = 38.sp,
+            fontSize = letterSize,
             fontFamily = FontOpenSansRegular,
             fontWeight = FontWeight(400),
             color = primaryTextColor
@@ -57,11 +67,11 @@ fun CarNumber(){
         Box(
             modifier = Modifier
                 .fillMaxHeight()
-                .width(2.dp)
+                .width(border)
                 .background(Color(0xFFA1A1A1))
         )
         Image(
-            modifier = Modifier.padding(horizontal = 6.dp),
+            modifier = Modifier.size(codeWith, codeHeight).padding(horizontal = horizontalPaddings),
             painter = painterResource(id = R.drawable.region_flag),
             contentDescription = "regionFlag"
         )
