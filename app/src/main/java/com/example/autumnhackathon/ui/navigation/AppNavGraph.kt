@@ -34,7 +34,13 @@ fun AppNavGraph(
         modifier = Modifier.background(backgroundColor)
     ){
         composable(route = Navigation.InitializationScreen.route) {
-            SingInScreen()
+            SingInScreen(
+                navigateToDriverProfile = {
+                    navController.navigate(Navigation.ProfileScreen.route){
+                        popUpTo(0)
+                    }
+                }
+            )
         }
 
         composable(route = Navigation.TasksScreen.route){

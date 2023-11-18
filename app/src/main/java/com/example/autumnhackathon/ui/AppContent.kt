@@ -104,11 +104,7 @@ fun BottomNavBar(navController: NavController, tabItems: Array<BottomTabs>) {
                         selected = isTabSelected,
                         onClick = {
                             navController.navigate(tab.route) {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
-                                }
-                                launchSingleTop = true
-                                restoreState = true
+
                             }
                         },
                     )

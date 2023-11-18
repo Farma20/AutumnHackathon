@@ -60,7 +60,7 @@ import com.example.autumnhackathon.ui.theme.secondaryTextColor
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SingInScreen(
-//    navigationToMainScreen: () -> Unit
+    navigateToDriverProfile: () -> Unit
 ) {
     val viewModel = hiltViewModel<SingInScreenViewModel>()
 
@@ -72,7 +72,9 @@ fun SingInScreen(
         viewModel.authEvents.collect{event ->
             when(event){
                 is SingInScreenViewModel.SingInEvent.Success ->{
-//                    navigationToMainScreen()
+                    if (event.message == "driver"){
+                        navigateToDriverProfile()
+                    }
                 }
                 is SingInScreenViewModel.SingInEvent.Error ->{
                     snackBarHostState.showSnackbar(

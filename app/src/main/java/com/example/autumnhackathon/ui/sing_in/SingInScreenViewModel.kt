@@ -50,7 +50,7 @@ class SingInScreenViewModel @Inject constructor(
 
                 when (result) {
                     is Resource.Success -> {
-                        authEventChannel.send(SingInEvent.Success(result.data?.name ?: "Успех"))
+                        authEventChannel.send(SingInEvent.Success(result.data?.type ?: "Успех"))
                     }
 
                     is Resource.Error -> {
