@@ -19,6 +19,6 @@ val Typography = Typography(
     )
 )
 
-val OpenSansRegular = FontFamily(
+val FontOpenSansRegular = FontFamily(
     Font(R.font.open_sans_regular)
 )

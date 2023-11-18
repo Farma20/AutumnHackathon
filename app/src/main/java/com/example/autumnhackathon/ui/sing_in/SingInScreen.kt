@@ -21,8 +21,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -50,7 +48,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.autumnhackathon.R
-import com.example.autumnhackathon.ui.theme.OpenSansRegular
+import com.example.autumnhackathon.ui.theme.FontOpenSansRegular
 import com.example.autumnhackathon.ui.theme.backgroundColor
 import com.example.autumnhackathon.ui.theme.buttonColor
 import com.example.autumnhackathon.ui.theme.secondaryTextColor
@@ -141,7 +139,7 @@ private fun InputForm(viewModel: SingInScreenViewModel){
         Text(
             text = "Логин",
             fontSize = 14.sp,
-            fontFamily = OpenSansRegular
+            fontFamily = FontOpenSansRegular
         )
     }
     Spacer(modifier = Modifier.height(6.dp))
@@ -173,7 +171,7 @@ private fun InputForm(viewModel: SingInScreenViewModel){
         Text(
             text = "Пароль",
             fontSize = 14.sp,
-            fontFamily = OpenSansRegular
+            fontFamily = FontOpenSansRegular
         )
     }
     Spacer(modifier = Modifier.height(6.dp))
@@ -230,7 +228,7 @@ private fun InputButton(
                 text = "Войти",
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Normal,
-                fontFamily = OpenSansRegular,
+                fontFamily = FontOpenSansRegular,
                 color = backgroundColor
             )
         }else{
@@ -255,7 +253,7 @@ private fun TopBar(){
             fontSize = 20.sp,
             fontWeight = FontWeight(400),
             color = secondaryTextColor,
-            fontFamily = OpenSansRegular
+            fontFamily = FontOpenSansRegular
         )
     }
 }

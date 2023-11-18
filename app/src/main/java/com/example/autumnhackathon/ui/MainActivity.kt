@@ -42,7 +42,7 @@ class MainActivity : ComponentActivity() {
                 systemUiController.setStatusBarColor(color = backgroundColor, darkIcons = true)
                 systemUiController.setNavigationBarColor(color = backgroundColor)
             }
-            SingInScreen()
+            AppContent()
         }
     }
 }

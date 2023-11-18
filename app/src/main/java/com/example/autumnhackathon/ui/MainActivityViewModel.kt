@@ -16,7 +16,7 @@ class MainActivityViewModel @Inject constructor():ViewModel() {
 
     init {
         viewModelScope.launch {
-            delay(2000)
+            delay(1000)
             mutableStateFlow.value = false
         }
     }
