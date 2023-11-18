@@ -3,7 +3,9 @@ package com.example.autumnhackathon.ui.task
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -21,6 +23,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.autumnhackathon.R
 import com.example.autumnhackathon.ui.task.elements.ProfileCardShort
+import com.example.autumnhackathon.ui.task.elements.TaskMainCard
 import com.example.autumnhackathon.ui.theme.backgroundColor
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -37,6 +40,8 @@ fun TaskScreen(){
                 .verticalScroll(rememberScrollState())
         ) {
             ProfileCardShort()
+            Spacer(modifier = Modifier.height(16.dp))
+            TaskMainCard(1)
         }
     }
 }
