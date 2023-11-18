@@ -21,6 +21,8 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -60,7 +62,6 @@ import com.example.autumnhackathon.ui.theme.secondaryTextColor
 fun SingInScreen(
 //    navigationToMainScreen: () -> Unit
 ) {
-
     val viewModel = hiltViewModel<SingInScreenViewModel>()
 
     val context = LocalContext.current
@@ -111,7 +112,9 @@ fun SingInScreen(
                 InputForm(viewModel)
                 Spacer(modifier = Modifier.weight(1f))
                 InputButton(
-                    sendData = {},
+                    sendData = {
+                            viewModel.sendData()
+                    },
                     isLoading = viewModel.isLoadingData.value
                 )
                 Spacer(modifier = Modifier.height(64.dp))
@@ -147,9 +150,9 @@ private fun InputForm(viewModel: SingInScreenViewModel){
         modifier = Modifier
             .fillMaxWidth(0.85f),
         shape = RoundedCornerShape(13.dp),
-        value = "",
+        value = viewModel.inputUserData.value.email,
         onValueChange = {
-
+            viewModel.setLoginData(it)
         },
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Email
@@ -179,9 +182,9 @@ private fun InputForm(viewModel: SingInScreenViewModel){
         modifier = Modifier
             .fillMaxWidth(0.85f),
         shape = RoundedCornerShape(13.dp),
-        value = "",
+        value = viewModel.inputUserData.value.password,
         onValueChange = {
-
+            viewModel.setPasswordData(it)
         },
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Password
@@ -190,12 +193,12 @@ private fun InputForm(viewModel: SingInScreenViewModel){
         singleLine = true,
         textStyle = TextStyle(fontSize = 16.sp),
         trailingIcon = {
-//            IconButton(onClick = { passwordVisibility = !passwordVisibility }) {
-//                Icon(
-//                    painter = icon,
-//                    contentDescription = null,
-//                )
-//            }
+            IconButton(onClick = { passwordVisibility = !passwordVisibility }) {
+                Icon(
+                    painter = icon,
+                    contentDescription = null,
+                )
+            }
         },
         colors = TextFieldDefaults.outlinedTextFieldColors(
             focusedBorderColor = buttonColor,
