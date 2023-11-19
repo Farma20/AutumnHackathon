@@ -1,82 +1,52 @@
 package com.example.autumnhackathon.ui.task
 
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.autumnhackathon.domain.use_cases.GetUserTasks
+import com.example.autumnhackathon.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.random.Random
 
 @HiltViewModel
 class TaskScreenViewModel @Inject constructor(
-
+    private val getUserTasks: GetUserTasks
 ): ViewModel()  {
-    private val _expeditions = MutableStateFlow(
-        listOf(
-            Expeditions(
-                number = 1,
-                time = Random.nextInt(5, 30),
-                status = Random.nextInt(1, 4),
-                gateNumber = Random.nextInt(1, 6),
-                productList = listOf<ProductItemDataClass>(
-                    ProductItemDataClass("Сушки «Кроха»", "10 Х 18 шт."),
-                    ProductItemDataClass("Сушки «Малютка»»", "10 Х 18 шт."),
-                    ProductItemDataClass("Пряники «Шоколадные» крупные", "15 Х 12 шт."),
-                    ProductItemDataClass("Пряники Заварные «абрикос»", "15 Х 12 шт."),
-                    ProductItemDataClass("Вафли со вкусом «Лимона»", "10 Х 36 шт."),
-                    ProductItemDataClass("Сухари «Московские»", "17 Х 18 шт."),
-                    ProductItemDataClass("Сухари «Сливочные»", "17 Х 18 шт."),
-                    ProductItemDataClass("Сухари «С маком»", "17 Х 18 шт."),
-                )
-            ),
-            Expeditions(
-                number = 2,
-                time = Random.nextInt(5, 30),
-                status = Random.nextInt(1, 4),
-                gateNumber = Random.nextInt(1, 6),
-                productList = listOf<ProductItemDataClass>(
-                    ProductItemDataClass("Вафли со вкусом «Лимона»", "10 Х 36 шт."),
-                    ProductItemDataClass("Сухари «Московские»", "17 Х 18 шт."),
-                    ProductItemDataClass("Сухари «Сливочные»", "17 Х 18 шт."),
-                    ProductItemDataClass("Сухари «С маком»", "17 Х 18 шт."),
-                    ProductItemDataClass("Сушки «Кроха»", "10 Х 18 шт."),
-                    ProductItemDataClass("Сушки «Малютка»»", "10 Х 18 шт."),
-                )
-            ),
-            Expeditions(
-                number = 3,
-                time = Random.nextInt(5, 30),
-                status = 3,
-                gateNumber = Random.nextInt(1, 6),
-                productList = listOf<ProductItemDataClass>(
-                    ProductItemDataClass("Вафли со вкусом «Лимона»", "10 Х 36 шт."),
-                    ProductItemDataClass("Сухари «Московские»", "17 Х 18 шт."),
-                    ProductItemDataClass("Сухари «Сливочные»", "17 Х 18 шт."),
-                    ProductItemDataClass("Сушки «Кроха»", "10 Х 18 шт."),
-                    ProductItemDataClass("Сушки «Малютка»»", "10 Х 18 шт."),
-                )
-            ),
-            Expeditions(
-                number = 4,
-                time = Random.nextInt(5, 30),
-                status = Random.nextInt(1, 4),
-                gateNumber = Random.nextInt(1, 6),
-                productList = listOf<ProductItemDataClass>(
-                    ProductItemDataClass("Вафли со вкусом «Лимона»", "10 Х 36 шт."),
-                    ProductItemDataClass("Сухари «Московские»", "17 Х 18 шт."),
-                    ProductItemDataClass("Сухари «Сливочные»", "17 Х 18 шт."),
-                    ProductItemDataClass("Сушки «Кроха»", "10 Х 18 шт."),
-                    ProductItemDataClass("Сушки «Малютка»»", "10 Х 18 шт."),
-                    ProductItemDataClass("Пряники Заварные «абрикос»", "15 Х 12 шт."),
-                    ProductItemDataClass("Вафли со вкусом «Лимона»", "10 Х 36 шт."),
-                    ProductItemDataClass("Сухари «Московские»", "17 Х 18 шт."),
-                    ProductItemDataClass("Сухари «Сливочные»", "17 Х 18 шт."),
-                    ProductItemDataClass("Сухари «С маком»", "17 Х 18 шт."),
-                )
-            ),
-        )
-    )
-    val expeditions: StateFlow<List<Expeditions>> = _expeditions
+    private val _expeditions = mutableStateOf<List<Expeditions>?>(null)
+    val expeditions: State<List<Expeditions>?> = _expeditions
+
+//    private val _isLoadingData = mutableStateOf(false)
+//    val isLoadingData: State<Boolean> = _isLoadingData
+
+    init {
+        getTasks()
+    }
+
+    private fun getTasks(){
+        viewModelScope.launch {
+            getUserTasks().onEach { result ->
+                when (result) {
+                    is Resource.Success -> {
+                        _expeditions.value = result.data!!
+                    }
+
+                    is Resource.Error -> {
+
+                    }
+
+                    is Resource.Loading -> {
+                    }
+                }
+            }.launchIn(this)
+        }
+    }
 
 }
 

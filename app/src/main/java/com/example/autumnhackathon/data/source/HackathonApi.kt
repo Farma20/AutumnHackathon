@@ -1,5 +1,6 @@
 package com.example.autumnhackathon.data.source
 
+import com.example.autumnhackathon.domain.models.ExpeditionItem
 import com.example.autumnhackathon.domain.models.ShiftResponse
 import com.example.autumnhackathon.domain.models.SingInDataDataClass
 import com.example.autumnhackathon.domain.models.SingInResponse
@@ -22,4 +23,8 @@ interface HackathonApi {
 
     @POST("/driver/end_shift")
     suspend fun endShift(@Header("auth") token: String = USER_TOKEN):ShiftResponse
+
+    @GET("/driver/collect_view")
+    suspend fun getEvents(@Header("auth") token: String = USER_TOKEN): List<ExpeditionItem>
+
 }

@@ -135,6 +135,8 @@ private fun TaskCard(
 private fun SuccessButton(
     expeditionIsReady: Boolean
 ) {
+
+    var isClicked by remember { mutableStateOf(false) }
     Button(
         modifier = Modifier
             .fillMaxWidth()
@@ -146,11 +148,11 @@ private fun SuccessButton(
             disabledContainerColor = Color(0xFFA1A1A1)
         ),
         onClick = {
-
+            isClicked != isClicked
         }
     ) {
         Text(
-            text = "Получил заказ",
+            text = if (isClicked) "Заказ получен" else "Получил заказ",
             fontSize = 16.sp,
             fontWeight = FontWeight.Normal,
             fontFamily = FontOpenSansRegular,
