@@ -61,7 +61,7 @@ fun ProfileScreen() {
                 Spacer(modifier = Modifier.weight(1f))
                 CongratulationCard(viewModel.userData.value!!.firstName)
                 Spacer(modifier = Modifier.weight(1f))
-                StartWorkButton()
+                StartWorkButton(viewModel)
                 Spacer(modifier = Modifier.weight(1f))
             }else{
                 Box(
@@ -105,7 +105,7 @@ private fun TopBar(){
 }
 
 @Composable
-private fun StartWorkButton(){
+private fun StartWorkButton(viewModel: ProfileScreenViewModel){
     Button(
         modifier = Modifier
             .fillMaxWidth()
@@ -115,16 +115,26 @@ private fun StartWorkButton(){
             containerColor = buttonColor
         ),
         onClick = {
-
+            if (!viewModel.userData.value!!.activeShift){
+                viewModel.startShift()
+            }else
+                viewModel.endShift()
         }
     ) {
-        Text(
-            text = "Начать смену",
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Normal,
-            fontFamily = FontOpenSansRegular,
-            color = backgroundColor
-        )
+        if (!viewModel.isLoadingShiftData.value){
+            Text(
+                text = if (!viewModel.userData.value!!.activeShift)"Начать смену" else "Завершить смену",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Normal,
+                fontFamily = FontOpenSansRegular,
+                color = backgroundColor
+            )
+        }
+        else{
+            CircularProgressIndicator(
+                color = backgroundColor
+            )
+        }
     }
 }
 
