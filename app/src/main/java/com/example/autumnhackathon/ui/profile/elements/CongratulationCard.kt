@@ -19,7 +19,9 @@ import com.example.autumnhackathon.ui.theme.FontOpenSansRegular
 import com.example.autumnhackathon.ui.theme.primaryTextColor
 
 @Composable
-fun CongratulationCard(){
+fun CongratulationCard(
+    name:String
+){
     Row(
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -31,7 +33,7 @@ fun CongratulationCard(){
         Spacer(modifier = Modifier.width(15.dp))
         Text(
             modifier = Modifier.width(190.dp),
-            text = "Иван, хорошего рабочего дня!",
+            text = "$name, хорошего рабочего дня!",
             fontSize = 20.sp,
             fontFamily = FontOpenSansRegular,
             fontWeight = FontWeight(400),

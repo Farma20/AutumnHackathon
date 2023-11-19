@@ -4,6 +4,7 @@ import com.example.autumnhackathon.domain.models.SingInDataDataClass
 import com.example.autumnhackathon.domain.models.SingInResponse
 import com.example.autumnhackathon.domain.repositories.SingInRepository
 import com.example.autumnhackathon.utils.Resource
+import com.example.autumnhackathon.utils.USER_TOKEN
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -15,6 +16,7 @@ class SingInUseCase @Inject constructor(
         try {
             emit(Resource.Loading())
             val response = initialRepository.singIn(singInData)
+            USER_TOKEN = response.token
             emit(Resource.Success(response))
         }catch (e:Exception){
             println(e.message.toString())

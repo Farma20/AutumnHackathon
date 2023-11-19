@@ -35,6 +35,7 @@ import com.example.autumnhackathon.ui.theme.primaryTextColor
 
 @Composable
 fun CarNumber(
+    number:String,
     height: Dp = 70.dp,
     border:Dp = 2.dp,
     borderSize:Dp = 10.dp,
@@ -53,11 +54,11 @@ fun CarNumber(
         Text(
             modifier = Modifier.padding(horizontal = horizontalPaddings),
             text = buildAnnotatedString {
-                append("п")
+                append(number[0])
                 withStyle(SpanStyle(fontSize = numberSize)){
-                    append("125")
+                    append("${number[1]}${number[2]}${number[3]}")
                 }
-                append("ми")
+                append("${number[4]}${number[5]}")
             },
             fontSize = letterSize,
             fontFamily = FontOpenSansRegular,
@@ -71,7 +72,9 @@ fun CarNumber(
                 .background(Color(0xFFA1A1A1))
         )
         Image(
-            modifier = Modifier.size(codeWith, codeHeight).padding(horizontal = horizontalPaddings),
+            modifier = Modifier
+                .size(codeWith, codeHeight)
+                .padding(horizontal = horizontalPaddings),
             painter = painterResource(id = R.drawable.region_flag),
             contentDescription = "regionFlag"
         )

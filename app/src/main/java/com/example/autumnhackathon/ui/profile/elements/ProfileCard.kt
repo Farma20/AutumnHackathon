@@ -22,12 +22,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.autumnhackathon.R
+import com.example.autumnhackathon.domain.models.UserDataDataModel
 import com.example.autumnhackathon.ui.theme.FontOpenSansRegular
 import com.example.autumnhackathon.ui.theme.buttonColor
 import com.example.autumnhackathon.ui.theme.primaryTextColor
 
 @Composable
-fun ProfileCard(){
+fun ProfileCard(userData:UserDataDataModel){
     Row(
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -44,18 +45,18 @@ fun ProfileCard(){
             )
         }
         Spacer(modifier = Modifier.width(12.dp))
-        UserData()
+        UserData(userData)
     }
 }
 
 @Composable
-private fun UserData(){
+private fun UserData(userData:UserDataDataModel){
     Column() {
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "Иван",
+                text = userData.firstName,
                 fontSize = 20.sp,
                 fontFamily = FontOpenSansRegular,
                 fontWeight = FontWeight(600),
@@ -71,7 +72,7 @@ private fun UserData(){
             )
         }
         Text(
-            text = "Васильевич",
+            text = userData.secondName,
             fontSize = 20.sp,
             fontFamily = FontOpenSansRegular,
             fontWeight = FontWeight(600),
@@ -79,7 +80,7 @@ private fun UserData(){
         )
         Spacer(modifier = Modifier.height(10.dp))
         Text(
-            text = "id12345678",
+            text = "id${userData.id}",
             fontSize = 20.sp,
             fontFamily = FontOpenSansRegular,
             fontWeight = FontWeight(400),

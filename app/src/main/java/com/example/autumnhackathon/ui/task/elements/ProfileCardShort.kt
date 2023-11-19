@@ -1,5 +1,6 @@
 package com.example.autumnhackathon.ui.task.elements
 
+import android.service.autofill.UserData
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -22,10 +23,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.autumnhackathon.R
+import com.example.autumnhackathon.domain.models.UserDataDataModel
 import com.example.autumnhackathon.ui.profile.elements.CarNumber
 import com.example.autumnhackathon.ui.theme.FontOpenSansRegular
 import com.example.autumnhackathon.ui.theme.buttonColor
 import com.example.autumnhackathon.ui.theme.primaryTextColor
+import com.example.autumnhackathon.utils.USER_DATA
 
 @Composable
 fun ProfileCardShort() {
@@ -45,18 +48,18 @@ fun ProfileCardShort() {
             )
         }
         Spacer(modifier = Modifier.width(12.dp))
-        UserData()
+        UserData(USER_DATA)
     }
 }
 
 @Composable
-private fun UserData(){
+private fun UserData(userData: UserDataDataModel){
     Column() {
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "Иван Васильевич",
+                text = "${userData.firstName} ${userData.secondName}",
                 fontSize = 16.sp,
                 fontFamily = FontOpenSansRegular,
                 fontWeight = FontWeight(600),
@@ -74,6 +77,7 @@ private fun UserData(){
         Spacer(modifier = Modifier.height(6.dp))
         Row {
             CarNumber(
+                number = userData.carNum,
                 height = 20.dp,
                 border = 0.5.dp,
                 borderSize = 2.5.dp,
@@ -85,7 +89,7 @@ private fun UserData(){
             )
             Spacer(modifier = Modifier.width(6.dp))
             Text(
-                text = "id12345678",
+                text = "id${userData.id}",
                 fontSize = 14.sp,
                 fontFamily = FontOpenSansRegular,
                 fontWeight = FontWeight(400),

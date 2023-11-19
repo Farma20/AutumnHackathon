@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -27,6 +28,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.autumnhackathon.R
 import com.example.autumnhackathon.ui.profile.elements.CarNumber
 import com.example.autumnhackathon.ui.profile.elements.CongratulationCard
@@ -34,6 +36,7 @@ import com.example.autumnhackathon.ui.profile.elements.ProfileCard
 import com.example.autumnhackathon.ui.theme.FontOpenSansRegular
 import com.example.autumnhackathon.ui.theme.backgroundColor
 import com.example.autumnhackathon.ui.theme.buttonColor
+import com.example.msmgrouptest.ui.sing_in.SingInScreenViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -43,19 +46,33 @@ fun ProfileScreen() {
         topBar = { TopBar()},
         containerColor = backgroundColor
     ) {scaffoldTopPaddings ->
+
+        val viewModel = hiltViewModel<ProfileScreenViewModel>()
+
         Column(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
                 .padding(top = scaffoldTopPaddings.calculateTopPadding())
         ) {
-            ProfileCard()
-            Spacer(modifier = Modifier.height(12.dp))
-            CarNumber()
-            Spacer(modifier = Modifier.weight(1f))
-            CongratulationCard()
-            Spacer(modifier = Modifier.weight(1f))
-            StartWorkButton()
-            Spacer(modifier = Modifier.weight(1f))
+            if (!viewModel.isLoadingData.value){
+                ProfileCard(viewModel.userData.value!!)
+                Spacer(modifier = Modifier.height(12.dp))
+                CarNumber(viewModel.userData.value!!.carNum)
+                Spacer(modifier = Modifier.weight(1f))
+                CongratulationCard(viewModel.userData.value!!.firstName)
+                Spacer(modifier = Modifier.weight(1f))
+                StartWorkButton()
+                Spacer(modifier = Modifier.weight(1f))
+            }else{
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ){
+                    CircularProgressIndicator(
+                        color = buttonColor
+                    )
+                }
+            }
         }
     }
 }

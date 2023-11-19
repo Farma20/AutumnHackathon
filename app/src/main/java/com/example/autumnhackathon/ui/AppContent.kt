@@ -3,6 +3,7 @@ package com.example.autumnhackathon.ui
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -43,6 +44,7 @@ fun AppContent() {
 
     Scaffold(
         modifier = Modifier
+            .fillMaxSize()
             .background(backgroundColor),
     ) {
         Box(
